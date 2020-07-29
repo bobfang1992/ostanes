@@ -1,0 +1,2 @@
+include versioneer.py
+include ostanes/_version.py
