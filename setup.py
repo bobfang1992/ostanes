@@ -1,11 +1,14 @@
 import setuptools
+
 import versioneer
+
+dependencies = ["sqlalchemy"]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ostanes", # Replace with your own username
+    name="ostanes",  # Replace with your own username
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     author="Bob Fang",
@@ -20,5 +23,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    install_requires=dependencies,
+    extras_require={"dev": ["black", "isort", "flake8", "pre-commit"]},
+    python_requires=">=3.6",
 )
