@@ -7,3 +7,7 @@ repos:
       rev: 3.7.9
       hooks:
       - id: flake8
+  -   repo: https://github.com/pre-commit/mirrors-isort
+      rev: v5.2.1  # Use the revision sha / tag you want to point at
+      hooks:
+      -   id: isort
