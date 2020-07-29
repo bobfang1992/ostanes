@@ -25,5 +25,4 @@ setuptools.setup(
     ],
     install_requires=dependencies,
     extras_require={"dev": ["black", "isort", "flake8", "pre-commit", "pytest"]},
-    python_requires=">=3.7",
 )
