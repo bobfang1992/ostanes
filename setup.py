@@ -2,7 +2,7 @@ import setuptools
 
 import versioneer
 
-dependencies = ["sqlalchemy"]
+dependencies = ["pydantic", "sqlalchemy"]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
