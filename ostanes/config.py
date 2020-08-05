@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from datetime import datetime
-from typing import Collection, Mapping, Optional, Union
+from typing import Collection, Union
 
 SQLValue = Union[int, str, float, datetime]
 EnumValue = Collection[Union[int, str]]
@@ -14,7 +13,7 @@ class ColumnConfig(ABC):
 
 
 class EnumColumnConfig(ColumnConfig):
-    def __init__(self, possible_values: EnumValue):
+    def __init__(self, possible_values: EnumValue = None):
         self.possible_values = possible_values
 
     def get_value(self) -> Union[int, str]:
@@ -22,7 +21,7 @@ class EnumColumnConfig(ColumnConfig):
 
 
 class IntegerColumnConfig(ColumnConfig):
-    def __init__(self, min_value, max_value):
+    def __init__(self, min_value=None, max_value=None):
         self.min = min_value
         self.max = max_value
 
@@ -31,7 +30,7 @@ class IntegerColumnConfig(ColumnConfig):
 
 
 class StringColumnConfig(ColumnConfig):
-    def __init__(self, template):
+    def __init__(self, template=None):
         self.template = template
 
     def get_value(self) -> str:
@@ -39,7 +38,7 @@ class StringColumnConfig(ColumnConfig):
 
 
 class DateTimeColumnConfig(ColumnConfig):
-    def __init__(self, min_value, max_value):
+    def __init__(self, min_value=None, max_value=None):
         self.min_value = min_value
         self.max_value = max_value
 
@@ -47,7 +46,8 @@ class DateTimeColumnConfig(ColumnConfig):
         pass
 
 
-@dataclass
 class TableConfig:
-    row: int = 20
-    columns: Optional[Mapping[str, ColumnConfig]] = None
+    def __init__(self, min_rows=None, max_rows=None, column_configs=None):
+        self._min_rows = min_rows
+        self._max_rows = max_rows
+        self._column_configs = column_configs
