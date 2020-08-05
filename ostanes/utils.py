@@ -8,17 +8,9 @@ from sqlalchemy.sql.schema import MetaData, Table
 
 
 @contextmanager
-def get_seesion(engine: Engine) -> ContextManager[Session]:
+def get_session(engine: Engine) -> ContextManager[Session]:
     session_maker = sessionmaker()
     session_maker.configure(bind=engine)
     session = session_maker()
     yield session
     session.close()
-
-
-def get_tables(meta: MetaData):
-    return meta.tables
-
-
-def get_columns(table: Table):
-    return table.columns
