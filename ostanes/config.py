@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Collection, Union
+from typing import Collection, Mapping, Union
 
 SQLValue = Union[int, str, float, datetime]
 EnumValue = Collection[Union[int, str]]
@@ -47,7 +47,12 @@ class DateTimeColumnConfig(ColumnConfig):
 
 
 class TableConfig:
-    def __init__(self, min_rows=None, max_rows=None, column_configs=None):
+    def __init__(
+        self,
+        min_rows: int = None,
+        max_rows: int = None,
+        column_configs: Mapping[str, ColumnConfig] = None,
+    ):
         self._min_rows = min_rows
         self._max_rows = max_rows
         self._column_configs = column_configs
