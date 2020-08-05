@@ -3,4 +3,6 @@ image:
 
 tasks:
   - init: "pip install -U pip 
-           && pip install .[dev]"
+           && pip install .[dev]
+           && PIP_USER=no pre-commit install
+           && PIP_USER=no pre-commit run"
