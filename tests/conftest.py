@@ -30,7 +30,6 @@ def simple_table_1(new_base, sqlite_engine):
         full_name = Column(String)
         nick_name = Column(String)
 
-    breakpoint()
     Base.metadata.create_all(engine)
 
     return {"sqlalchemy_base": Base, "engine": engine, "tables": {"User": User}}
