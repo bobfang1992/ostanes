@@ -29,6 +29,15 @@ class IntegerColumnConfig(ColumnConfig):
         pass
 
 
+class FloatColumnConfig(ColumnConfig):
+    def __init__(self, min_value=None, max_value=None):
+        self.min = min_value
+        self.max = max_value
+
+    def get_value(self) -> int:
+        pass
+
+
 class StringColumnConfig(ColumnConfig):
     def __init__(self, template=None):
         self.template = template
