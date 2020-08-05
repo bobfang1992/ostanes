@@ -5,4 +5,5 @@ tasks:
   - init: "pip install -U pip 
            && pip install .[dev]
            && PIP_USER=no pre-commit install
-           && PIP_USER=no pre-commit run"
+           && PIP_USER=no pre-commit run
+           && unset PIP_USER"
