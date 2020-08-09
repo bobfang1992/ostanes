@@ -67,5 +67,8 @@ def test_generate_inserts_for_table(simple_table_1):
     user_inserts_values = generate_inserts_values_for_table(table_config)
     engine = simple_table_1["engine"]
     engine.execute(user.insert(), user_inserts_values)
+
     with get_session(engine) as s:
-        s.query(user).all()
+        result = s.query(user).all()
+        assert len(result) <= table_config.max_rows
+        assert len(result) >= table_config.min_rows

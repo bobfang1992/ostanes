@@ -26,6 +26,11 @@ def should_use_autoincrement_pkey(table_config: TableConfig):
     return should_use_auto_increment_primary_key
 
 
+def dict_of_arrays_to_array_of_dicts(d: dict) -> list:
+    v = [dict(zip(d, t)) for t in zip(*d.values())]
+    return v
+
+
 def generate_inserts_values_for_table(table_config: TableConfig) -> List[Dict]:
     """
     """
@@ -48,5 +53,4 @@ def generate_inserts_values_for_table(table_config: TableConfig) -> List[Dict]:
     rows = random.randint(table_config.min_rows, table_config.max_rows)
     for key in value_columns:
         values[key] = value_columns[key].get_values(rows)
-    print(values)
-    return [{"name": "Bob"}, {"name": "Alex"}]
+    return dict_of_arrays_to_array_of_dicts(values)
