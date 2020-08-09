@@ -25,6 +25,14 @@ setuptools.setup(
     ],
     install_requires=dependencies,
     extras_require={
-        "dev": ["black", "isort", "flake8", "pre-commit", "pytest", "sqlalchemy-stubs"]
+        "dev": [
+            "black",
+            "isort",
+            "flake8",
+            "pre-commit",
+            "pytest",
+            "pytest-cov",
+            "sqlalchemy-stubs",
+        ]
     },
 )

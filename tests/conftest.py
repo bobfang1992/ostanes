@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, DateTime, Float, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
 SQLLITE_IN_MEMORY = "sqlite:///:memory:"
@@ -29,6 +29,9 @@ def simple_table_1(new_base, sqlite_engine):
         name = Column(String)
         full_name = Column(String)
         nick_name = Column(String)
+        height = Column(Float)
+        weight = Column(Float)
+        birth_day = Column(DateTime)
 
     Base.metadata.create_all(engine)
 

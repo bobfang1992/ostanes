@@ -1,7 +1,12 @@
-from ostanes.utils import get_session
+from sqlalchemy.sql.sqltypes import Integer
 
-def test_core():
-    assert 1 + 1 == 2
+from ostanes.tableconfig import (
+    FloatColumnConfig,
+    PrimaryKeyColumnConfig,
+    generate_column_config,
+    generate_table_config,
+)
+from ostanes.utils import get_session
 
 
 def test_simple_table_1(simple_table_1):
@@ -23,5 +28,22 @@ def test_simple_table_1(simple_table_1):
     assert list(tables.keys())[0] == "user"
 
     user_table = tables["user"]
-    columns = user_table.columns
-    assert len(columns) == 4
+    user_table.columns
+
+
+def test_generate_column_config(simple_table_1):
+    base = simple_table_1["sqlalchemy_base"]
+    tables = base.metadata.tables
+    user = tables["user"]
+    columns = user.columns
+    id_col = columns["id"]
+    column_config = generate_column_config(id_col)
+    assert isinstance(column_config, PrimaryKeyColumnConfig)
+    assert column_config.type == Integer
+
+    height_col = columns["height"]
+    column_config = generate_column_config(height_col)
+    assert isinstance(column_config, FloatColumnConfig)
+    table_config = generate_table_config(user)
+    column_configs = table_config.column_configs
+    assert "id" in column_configs
