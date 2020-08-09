@@ -65,7 +65,9 @@ jobs:
       # overwritten (fine for wheels, where same-name should mean same-data)
       with:
         name: dist
-        path: ./dist
+        path: |
+          ./dist
+          coverage.xml
 
   publish:
     runs-on: ubuntu-latest
