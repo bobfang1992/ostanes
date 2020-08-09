@@ -1,5 +1,6 @@
 from sqlalchemy.sql.sqltypes import Integer
 
+from ostanes.generator import generate_inserts_for_table, should_use_autoincrement_pkey
 from ostanes.tableconfig import (
     FloatColumnConfig,
     PrimaryKeyColumnConfig,
@@ -47,3 +48,22 @@ def test_generate_column_config(simple_table_1):
     table_config = generate_table_config(user)
     column_configs = table_config.column_configs
     assert "id" in column_configs
+
+
+def test_should_use_auto_increment_pkey(simple_table_1):
+    base = simple_table_1["sqlalchemy_base"]
+    tables = base.metadata.tables
+    user = tables["user"]
+    table_config = generate_table_config(user)
+    auto_pkey = should_use_autoincrement_pkey(table_config)
+    assert auto_pkey
+
+
+def test_generate_inserts_for_table(simple_table_1):
+    base = simple_table_1["sqlalchemy_base"]
+    tables = base.metadata.tables
+    user = tables["user"]
+    table_config = generate_table_config(user)
+    user_inserts = generate_inserts_for_table(table_config)
+    assert not user_inserts
+    # breakpoint()

@@ -33,6 +33,7 @@ setuptools.setup(
             "pytest",
             "pytest-cov",
             "sqlalchemy-stubs",
+            "tox",
         ]
     },
 )

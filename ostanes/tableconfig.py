@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Collection, Mapping, Union
+from typing import Collection, List, Mapping, Union
 
 from sqlalchemy.schema import Column, Table
 from sqlalchemy.sql.sqltypes import DateTime, Float, Integer, String
 
 SQLValue = Union[int, str, float, datetime]
+SQLValueList = Union[List[int], List[str], List[float], List[datetime]]
 EnumValue = Collection[Union[int, str]]
 
 
@@ -14,8 +15,14 @@ class ColumnConfig(ABC):
         self._column = Column
 
     @abstractmethod
-    def get_value(self) -> SQLValue:
+    def get_values(self, row: int) -> SQLValueList:
         raise NotImplementedError("ColumnConfig is an abstract base class")
+
+    def is_primary_key(self):
+        return False
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(column={self._column})"
 
 
 class EnumColumnConfig(ColumnConfig):
@@ -23,7 +30,7 @@ class EnumColumnConfig(ColumnConfig):
         self._column = column
         self.possible_values = possible_values
 
-    def get_value(self) -> Union[int, str]:
+    def get_values(self, row: int) -> Union[List[int], List[str]]:
         pass
 
 
@@ -33,7 +40,7 @@ class IntegerColumnConfig(ColumnConfig):
         self.min = min_value
         self.max = max_value
 
-    def get_value(self) -> int:
+    def get_values(self, row) -> List[int]:
         pass
 
 
@@ -43,7 +50,7 @@ class FloatColumnConfig(ColumnConfig):
         self.min = min_value
         self.max = max_value
 
-    def get_value(self) -> int:
+    def get_values(self, row) -> List[float]:
         pass
 
 
@@ -52,7 +59,7 @@ class StringColumnConfig(ColumnConfig):
         self._column = column
         self.template = template
 
-    def get_value(self) -> str:
+    def get_values(self, row) -> List[str]:
         pass
 
 
@@ -62,7 +69,7 @@ class DateTimeColumnConfig(ColumnConfig):
         self.min_value = min_value
         self.max_value = max_value
 
-    def get_value(self) -> datetime:
+    def get_values(self, row) -> List[datetime]:
         pass
 
 
@@ -71,8 +78,15 @@ class PrimaryKeyColumnConfig(ColumnConfig):
         self._column = column
         self.type = col_type
 
-    def get_value(self):
+    @property
+    def col_type(self):
+        return self.type
+
+    def get_values(self, row: int) -> Union[List[int], List[str]]:
         pass
+
+    def is_primary_key(self):
+        return True
 
 
 class TableConfig:
