@@ -57,7 +57,7 @@ jobs:
         # Refer: https://cibuildwheel.readthedocs.io/en/stable/cpp_standards/#windows-and-python-27
         CIBW_SKIP: cp27-* cp35-* pp* *-win32
         CIBW_BEFORE_TEST: pip install ".[dev]"
-        CIBW_TEST_COMMAND: pytest {project}/tests
+        CIBW_TEST_COMMAND: pytest --cov {project}/ostanes {project}/tests
       run: |
         python -m cibuildwheel --output-dir dist
     - uses: actions/upload-artifact@v2

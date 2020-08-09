@@ -7,9 +7,9 @@ from sqlalchemy.orm.session import Session
 
 
 @contextmanager
-def get_seesion(engine: Engine) -> ContextManager[Session]:
+def get_session(engine: Engine) -> ContextManager[Session]:
     session_maker = sessionmaker()
     session_maker.configure(bind=engine)
-    session = session_maker()
+    session: Session = session_maker()
     yield session
     session.close()
