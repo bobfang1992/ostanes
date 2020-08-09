@@ -1,3 +1,5 @@
+import random
+import string
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Collection, List, Mapping, Union
@@ -8,6 +10,10 @@ from sqlalchemy.sql.sqltypes import DateTime, Float, Integer, String
 SQLValue = Union[int, str, float, datetime]
 SQLValueList = Union[List[int], List[str], List[float], List[datetime]]
 EnumValue = Collection[Union[int, str]]
+
+
+def generate_totally_random_string(length: int) -> str:
+    return "".join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 
 class ColumnConfig(ABC):
@@ -58,9 +64,13 @@ class StringColumnConfig(ColumnConfig):
     def __init__(self, column, template=None):
         self._column = column
         self.template = template
+        self._default_length = 5
 
     def get_values(self, row) -> List[str]:
-        pass
+        result = []
+        for i in range(row):
+            result.append(generate_totally_random_string(self._default_length))
+        return result
 
 
 class DateTimeColumnConfig(ColumnConfig):
@@ -109,6 +119,14 @@ class TableConfig:
     @property
     def table(self):
         return self._table
+
+    @property
+    def min_rows(self):
+        return self._min_rows
+
+    @property
+    def max_rows(self):
+        return self._max_rows
 
 
 def generate_column_config(column: Column) -> ColumnConfig:

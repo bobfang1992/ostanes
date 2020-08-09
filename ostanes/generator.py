@@ -1,3 +1,4 @@
+import random
 from typing import Dict, List
 
 from sqlalchemy.sql.sqltypes import Integer
@@ -43,5 +44,9 @@ def generate_inserts_values_for_table(table_config: TableConfig) -> List[Dict]:
         }
     else:
         value_columns = {key: column_configs[key] for key in column_configs}
-    print(value_columns)
+    values = {}
+    rows = random.randint(table_config.min_rows, table_config.max_rows)
+    for key in value_columns:
+        values[key] = value_columns[key].get_values(rows)
+    print(values)
     return [{"name": "Bob"}, {"name": "Alex"}]
