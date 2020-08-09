@@ -1,6 +1,9 @@
 from sqlalchemy.sql.sqltypes import Integer
 
-from ostanes.generator import generate_inserts_for_table, should_use_autoincrement_pkey
+from ostanes.generator import (
+    generate_inserts_values_for_table,
+    should_use_autoincrement_pkey,
+)
 from ostanes.tableconfig import (
     FloatColumnConfig,
     PrimaryKeyColumnConfig,
@@ -27,9 +30,6 @@ def test_simple_table_1(simple_table_1):
     tables = base.metadata.tables
     assert len(tables) == 1
     assert list(tables.keys())[0] == "user"
-
-    user_table = tables["user"]
-    user_table.columns
 
 
 def test_generate_column_config(simple_table_1):
@@ -64,6 +64,11 @@ def test_generate_inserts_for_table(simple_table_1):
     tables = base.metadata.tables
     user = tables["user"]
     table_config = generate_table_config(user)
-    user_inserts = generate_inserts_for_table(table_config)
-    assert not user_inserts
-    # breakpoint()
+    user_inserts_values = generate_inserts_values_for_table(table_config)
+    engine = simple_table_1["engine"]
+    engine.execute(user.insert(), user_inserts_values)
+
+    with get_session(engine) as s:
+        result = s.query(user).all()
+        assert len(result) <= table_config.max_rows
+        assert len(result) >= table_config.min_rows
