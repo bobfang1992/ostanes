@@ -53,7 +53,7 @@ jobs:
     - name: Build wheels
       env:
         # Skip building on Python 2.7 and PyPy
-        # Additionally, skip 32-bit Windows for now as MSVC needs seperate setup with different toolchain to do this
+        # Additionally, skip 32-bit Windows for now as MSVC needs separate setup with different toolchain to do this
         # Refer: https://cibuildwheel.readthedocs.io/en/stable/cpp_standards/#windows-and-python-27
         CIBW_SKIP: cp27-* cp35-* pp* *-win32
         CIBW_BEFORE_TEST: pip install ".[dev]"
